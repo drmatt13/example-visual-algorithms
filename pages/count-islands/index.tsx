@@ -53,12 +53,12 @@ const Page = () => {
     islandCount: number;
   }>({
     menuOption: 0,
-    gridLength: 20,
+    gridLength: 40,
     gridRange: [20, 100],
     randomPointsLength: 35,
     randomPoints: [],
-    decay: 0.38,
-    decayRange: [0, 1],
+    decay: 0.37,
+    decayRange: [0, 0.5],
     islandCount: 0,
   });
   const [menuOption, setMenuOption] = useState<0 | 1 | 2 | 3>(
@@ -152,7 +152,6 @@ const Page = () => {
             className={`h-full w-full border border-sky-700/50 noselect transition-colors duration-200 ease-in`}
             data-key={key}
             data-landtype={"water"}
-            data-animateLandGeneration-processed={false}
             data-countIslands-enqueued={false}
             data-countIslands-traverseLand-processed={false}
           />
@@ -205,7 +204,7 @@ const Page = () => {
       element.classList.remove("border", "border-sky-700/50");
       element.classList.add("bg-green-800");
       element.setAttribute("data-landtype", "land");
-      element.setAttribute("data-animateLandGeneration-processed", "true");
+
       if (randomPoints.length > 0) {
         return (animtionRef.current = requestAnimationFrame(animatePoints));
       }
@@ -228,16 +227,13 @@ const Page = () => {
       animtionRef.current = requestAnimationFrame(animateLandGeneration);
     }
 
-    const queue = new Queue<number>();
-    for (let point of randomPoints) {
-      queue.enqueue(point);
-    }
+    const stack: number[] = randomPoints.slice();
 
     function animateLandGeneration() {
       if (animationStateRef.current === false) {
         return reset();
       }
-      const element = gridContainerRef.current!.children[queue.dequeue()!];
+      const element = gridContainerRef.current!.children[stack.pop()!];
 
       element.classList.remove("border", "border-sky-700/50");
       element.classList.add("bg-green-800");
@@ -245,63 +241,34 @@ const Page = () => {
 
       const [x, y] = decode(Number(element.getAttribute("data-key")));
 
+      const traverse = (element: Element) => {
+        if (element.getAttribute("data-landtype") === "water") {
+          if (Math.random() < decay)
+            stack.push(+element.getAttribute("data-key")!);
+        }
+      };
+
       if (x > 0) {
         const leftElement =
           gridContainerRef.current!.children[encode(x - 1, y)];
-        if (
-          leftElement.getAttribute("data-animateLandGeneration-processed") ===
-          "false"
-        ) {
-          leftElement.setAttribute(
-            "data-animateLandGeneration-processed",
-            "true"
-          );
-          if (Math.random() < decay) queue.enqueue(encode(x - 1, y));
-        }
+        traverse(leftElement);
       }
       if (x < gridLength - 1) {
         const rightElement =
           gridContainerRef.current!.children[encode(x + 1, y)];
-        if (
-          rightElement.getAttribute("data-animateLandGeneration-processed") ===
-          "false"
-        ) {
-          rightElement.setAttribute(
-            "data-animateLandGeneration-processed",
-            "true"
-          );
-          if (Math.random() < decay) queue.enqueue(encode(x + 1, y));
-        }
+        traverse(rightElement);
       }
       if (y > 0) {
         const topElement = gridContainerRef.current!.children[encode(x, y - 1)];
-        if (
-          topElement.getAttribute("data-animateLandGeneration-processed") ===
-          "false"
-        ) {
-          topElement.setAttribute(
-            "data-animateLandGeneration-processed",
-            "true"
-          );
-          if (Math.random() < decay) queue.enqueue(encode(x, y - 1));
-        }
+        traverse(topElement);
       }
       if (y < gridLength - 1) {
         const bottomElement =
           gridContainerRef.current!.children[encode(x, y + 1)];
-        if (
-          bottomElement.getAttribute("data-animateLandGeneration-processed") ===
-          "false"
-        ) {
-          bottomElement.setAttribute(
-            "data-animateLandGeneration-processed",
-            "true"
-          );
-          if (Math.random() < decay) queue.enqueue(encode(x, y + 1));
-        }
+        traverse(bottomElement);
       }
 
-      if (queue.head) {
+      if (stack.length) {
         return requestAnimationFrame(animateLandGeneration);
       }
 
@@ -317,7 +284,6 @@ const Page = () => {
 
     const waterQueue = new Queue<Element>();
     const landQueue = new Queue<Element>();
-    let traversingLand = false;
 
     const enqueueElement = (element: Element) => {
       if (element.getAttribute("data-countIslands-enqueued") === "false") {
@@ -336,16 +302,13 @@ const Page = () => {
       }
       optionsContainerRef.current!.querySelectorAll("button")[0].disabled =
         true;
-      const randomElement =
-        gridContainerRef.current!.children[
-          Math.floor(Math.random() * gridLength ** 2)
-        ];
-      randomElement.setAttribute("data-countIslands-enqueued", "true");
-      if (randomElement.getAttribute("data-landtype") === "water") {
-        waterQueue.enqueue(randomElement);
+      const firstIsland = gridContainerRef.current!.children[randomPoints[0]];
+      firstIsland.setAttribute("data-countIslands-enqueued", "true");
+      if (firstIsland.getAttribute("data-landtype") === "water") {
+        waterQueue.enqueue(firstIsland);
         return (animtionRef.current = requestAnimationFrame(traverseWater));
       }
-      landQueue.enqueue(randomElement);
+      landQueue.enqueue(firstIsland);
       setIslandCount((islandCount) => islandCount + 1);
       return (animtionRef.current = requestAnimationFrame(traverseLand));
     }
@@ -536,7 +499,7 @@ const Page = () => {
         )}
         {menuOption === 3 && (
           <>
-            <div>Islands Founds: {islandCount}</div>
+            <div>count: {islandCount}</div>
             <button
               className="mt-[2.6rem] bg-gray-300 hover:bg-gray-200 disabled:bg-gray-500 cursor-pointer disabled:cursor-not-allowed p-3 rounded-sm text-black"
               onClick={countIslands}
