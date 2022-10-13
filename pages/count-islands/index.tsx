@@ -406,7 +406,7 @@ const Page = () => {
     }
 
     animtionRef.current = requestAnimationFrame(startAnimation);
-  }, [decode, encode, gridLength, reset]);
+  }, [decode, encode, gridLength, randomPoints, reset]);
 
   return (
     <div className="min-h-full flex flex-col items-center py-8">
