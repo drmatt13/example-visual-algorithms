@@ -94,21 +94,26 @@ const Page = () => {
   );
 
   const reset = useCallback(() => {
-    if (animationStateRef.current) {
+    if (animationStateRef.current && optionsContainerRef.current) {
       animationStateRef.current = false;
       const resetButton =
-        optionsContainerRef.current!.querySelectorAll("button")[1];
+        optionsContainerRef.current.querySelectorAll("button")[1];
       resetButton.disabled = true;
       resetButton.style.transform = "tranzlateZ(0)";
       return;
     }
     animationStateRef.current = true;
     function startAnimation() {
-      optionsContainerRef.current!.querySelectorAll("input")[0].disabled = true;
-      optionsContainerRef.current!.querySelectorAll("button").forEach((btn) => {
-        btn.disabled = true;
-      });
-      animtionRef.current = requestAnimationFrame(updateState);
+      if (optionsContainerRef.current) {
+        optionsContainerRef.current.querySelectorAll("input")[0].disabled =
+          true;
+        optionsContainerRef.current
+          .querySelectorAll("button")
+          .forEach((btn) => {
+            btn.disabled = true;
+          });
+        animtionRef.current = requestAnimationFrame(updateState);
+      }
     }
     function updateState() {
       setGridLength(initialState.gridLength);
@@ -136,12 +141,11 @@ const Page = () => {
   const generateGrid = useCallback(() => {
     animationStateRef.current = true;
     function startAnimation() {
-      if (animationStateRef.current === false) {
+      if (animationStateRef.current === false || !optionsContainerRef.current) {
         return reset();
       }
-      optionsContainerRef.current!.querySelectorAll("input")[0].disabled = true;
-      optionsContainerRef.current!.querySelectorAll("button")[0].disabled =
-        true;
+      optionsContainerRef.current.querySelectorAll("input")[0].disabled = true;
+      optionsContainerRef.current.querySelectorAll("button")[0].disabled = true;
       animtionRef.current = requestAnimationFrame(createGrid);
     }
     function createGrid() {
@@ -149,7 +153,7 @@ const Page = () => {
         Array.from({ length: gridLength ** 2 }, (_, key) => (
           <div
             key={key}
-            className={`h-full w-full border border-sky-700/50 noselect transition-colors duration-200 ease-in`}
+            className={`h-full w-full border border-sky-700/50 noselect transition-colors ease-in animate-fade-in`}
             data-key={key}
             data-landtype={"water"}
             data-countIslands-enqueued={false}
@@ -186,22 +190,26 @@ const Page = () => {
     });
 
     function startAnimation() {
-      if (animationStateRef.current === false) {
+      if (animationStateRef.current === false || !optionsContainerRef.current) {
         return reset();
       }
-      optionsContainerRef.current!.querySelectorAll("input")[0].disabled = true;
-      optionsContainerRef.current!.querySelectorAll("button")[0].disabled =
-        true;
+      optionsContainerRef.current.querySelectorAll("input")[0].disabled = true;
+      optionsContainerRef.current.querySelectorAll("button")[0].disabled = true;
       animtionRef.current = requestAnimationFrame(animatePoints);
     }
     function animatePoints() {
-      if (animationStateRef.current === false) {
+      if (animationStateRef.current === false || !gridContainerRef.current) {
         return reset();
       }
       const point = decode(randomPoints.pop()!);
       const element =
-        gridContainerRef.current!.children[encode(point[0], point[1])];
-      element.classList.remove("border", "border-sky-700/50");
+        gridContainerRef.current.children[encode(point[0], point[1])];
+      element.classList.remove(
+        "border",
+        "border-sky-700/50",
+        "animate-fade-in",
+        "transition-colors"
+      );
       element.classList.add("bg-green-800");
       element.setAttribute("data-landtype", "land");
 
@@ -218,25 +226,28 @@ const Page = () => {
     animationStateRef.current = true;
 
     function startAnimation() {
-      if (animationStateRef.current === false) {
+      if (animationStateRef.current === false || !optionsContainerRef.current) {
         return reset();
       }
-      optionsContainerRef.current!.querySelectorAll("input")[0].disabled = true;
-      optionsContainerRef.current!.querySelectorAll("button")[0].disabled =
-        true;
+      optionsContainerRef.current.querySelectorAll("input")[0].disabled = true;
+      optionsContainerRef.current.querySelectorAll("button")[0].disabled = true;
       animtionRef.current = requestAnimationFrame(animateLandGeneration);
     }
 
     const stack: number[] = randomPoints.slice();
 
     function animateLandGeneration() {
-      if (animationStateRef.current === false) {
+      if (animationStateRef.current === false || !gridContainerRef.current) {
         return reset();
       }
-      const element = gridContainerRef.current!.children[stack.pop()!];
+      const element = gridContainerRef.current.children[stack.pop()!];
 
-      element.classList.remove("border", "border-sky-700/50");
-      element.classList.add("bg-green-800");
+      element.classList.remove(
+        "border",
+        "border-sky-700/50",
+        "animate-fade-in"
+      );
+      element.classList.add("bg-green-800", "duration-300");
       element.setAttribute("data-landtype", "land");
 
       const [x, y] = decode(Number(element.getAttribute("data-key")));
@@ -249,22 +260,21 @@ const Page = () => {
       };
 
       if (x > 0) {
-        const leftElement =
-          gridContainerRef.current!.children[encode(x - 1, y)];
+        const leftElement = gridContainerRef.current.children[encode(x - 1, y)];
         traverse(leftElement);
       }
       if (x < gridLength - 1) {
         const rightElement =
-          gridContainerRef.current!.children[encode(x + 1, y)];
+          gridContainerRef.current.children[encode(x + 1, y)];
         traverse(rightElement);
       }
       if (y > 0) {
-        const topElement = gridContainerRef.current!.children[encode(x, y - 1)];
+        const topElement = gridContainerRef.current.children[encode(x, y - 1)];
         traverse(topElement);
       }
       if (y < gridLength - 1) {
         const bottomElement =
-          gridContainerRef.current!.children[encode(x, y + 1)];
+          gridContainerRef.current.children[encode(x, y + 1)];
         traverse(bottomElement);
       }
 
@@ -297,12 +307,15 @@ const Page = () => {
     };
 
     function startAnimation() {
-      if (animationStateRef.current === false) {
+      if (
+        animationStateRef.current === false ||
+        !gridContainerRef.current ||
+        !optionsContainerRef.current
+      ) {
         return reset();
       }
-      optionsContainerRef.current!.querySelectorAll("button")[0].disabled =
-        true;
-      const firstIsland = gridContainerRef.current!.children[randomPoints[0]];
+      optionsContainerRef.current.querySelectorAll("button")[0].disabled = true;
+      const firstIsland = gridContainerRef.current.children[randomPoints[0]];
       firstIsland.setAttribute("data-countIslands-enqueued", "true");
       if (firstIsland.getAttribute("data-landtype") === "water") {
         waterQueue.enqueue(firstIsland);
@@ -314,33 +327,36 @@ const Page = () => {
     }
 
     function traverseWater() {
-      if (animationStateRef.current === false) {
+      if (animationStateRef.current === false || !gridContainerRef.current) {
         return reset();
       }
       const element = waterQueue.dequeue()!;
 
-      element.classList.remove("border", "border-sky-700/50");
-      element.classList.add("bg-blue-800");
+      element.classList.remove(
+        "border",
+        "border-sky-700/50",
+        "animate-fade-in"
+      );
+      element.classList.add("bg-blue-800", "duration-100");
 
       const [x, y] = decode(Number(element.getAttribute("data-key")));
 
       if (x > 0) {
-        const leftElement =
-          gridContainerRef.current!.children[encode(x - 1, y)];
+        const leftElement = gridContainerRef.current.children[encode(x - 1, y)];
         enqueueElement(leftElement);
       }
       if (x < gridLength - 1) {
         const rightElement =
-          gridContainerRef.current!.children[encode(x + 1, y)];
+          gridContainerRef.current.children[encode(x + 1, y)];
         enqueueElement(rightElement);
       }
       if (y > 0) {
-        const topElement = gridContainerRef.current!.children[encode(x, y - 1)];
+        const topElement = gridContainerRef.current.children[encode(x, y - 1)];
         enqueueElement(topElement);
       }
       if (y < gridLength - 1) {
         const bottomElement =
-          gridContainerRef.current!.children[encode(x, y + 1)];
+          gridContainerRef.current.children[encode(x, y + 1)];
         enqueueElement(bottomElement);
       }
 
@@ -354,7 +370,7 @@ const Page = () => {
     }
 
     function traverseLand() {
-      if (animationStateRef.current === false) {
+      if (animationStateRef.current === false || !gridContainerRef.current) {
         return reset();
       }
       const element = landQueue.dequeue()!;
@@ -372,28 +388,32 @@ const Page = () => {
 
       element.setAttribute("data-countIslands-traverseLand-processed", "true");
 
-      element.classList.remove("bg-green-800");
-      element.classList.add("bg-green-500", "border", "border-sky-700/50");
+      element.classList.remove("bg-green-800", "animate-fade-in");
+      element.classList.add(
+        "bg-green-500",
+        "border",
+        "border-sky-700/50",
+        "duration-200"
+      );
 
       const [x, y] = decode(Number(element.getAttribute("data-key")));
 
       if (x > 0) {
-        const leftElement =
-          gridContainerRef.current!.children[encode(x - 1, y)];
+        const leftElement = gridContainerRef.current.children[encode(x - 1, y)];
         enqueueElement(leftElement);
       }
       if (x < gridLength - 1) {
         const rightElement =
-          gridContainerRef.current!.children[encode(x + 1, y)];
+          gridContainerRef.current.children[encode(x + 1, y)];
         enqueueElement(rightElement);
       }
       if (y > 0) {
-        const topElement = gridContainerRef.current!.children[encode(x, y - 1)];
+        const topElement = gridContainerRef.current.children[encode(x, y - 1)];
         enqueueElement(topElement);
       }
       if (y < gridLength - 1) {
         const bottomElement =
-          gridContainerRef.current!.children[encode(x, y + 1)];
+          gridContainerRef.current.children[encode(x, y + 1)];
         enqueueElement(bottomElement);
       }
 

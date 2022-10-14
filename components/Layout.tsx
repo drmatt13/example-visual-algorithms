@@ -10,7 +10,7 @@ const Layout = ({ children }: Props) => {
 
   return (
     <>
-      <div className="relative text-gray-300 flex h-0 min-h-screen pt-20 overflow-y-auto /bg-black">
+      <div className="relative text-gray-300 flex h-0 min-h-screen pt-20 overflow-y-auto bg-black z-50">
         <div
           className="absolute flex justify-center items-center rounded-full top-5 left-5 h-10 w-10 cursor-pointer hover:text-white"
           onClick={() => setIsMenuOpen(true)}
@@ -25,7 +25,7 @@ const Layout = ({ children }: Props) => {
           <div
             className={`${
               isMenuOpen ? "opacity-100" : "opacity-0"
-            } absolute w-full h-full transition-opacity backdrop-blur`}
+            } absolute w-full h-full transition-opacity bg-black bg-opacity-50`}
             onClick={() => setIsMenuOpen(false)}
           ></div>
           <nav
@@ -33,7 +33,7 @@ const Layout = ({ children }: Props) => {
               isMenuOpen
                 ? "translate-x-0 duration-200"
                 : "-translate-x-full duration-300"
-            } noselect bg-black transition-transform fixed top-0 left-0 h-screen flex flex-col items-start w-64 [&>a]:cursor-pointer [&>a:hover]:text-white [&>a]:mt-10 [&>a:first-of-type]:mt-20 pl-10 overflow-y-auto`}
+            } noselect bg-black border-r border-gray-800 transition-transform fixed top-0 left-0 h-screen flex flex-col items-start w-64 [&>a]:cursor-pointer [&>a:hover]:text-white [&>a]:mt-10 [&>a:first-of-type]:mt-20 pl-10 overflow-y-auto`}
           >
             <Link href="infinite-scroll">
               <a onClick={() => setIsMenuOpen(false)}>Infinite Scroll</a>
@@ -59,7 +59,7 @@ const Layout = ({ children }: Props) => {
           </nav>
         </div>
 
-        <div className="h-full w-full">{children}</div>
+        <div className="h-full w-full -z-10">{children}</div>
       </div>
     </>
   );
