@@ -31,7 +31,7 @@ const Post = ({ post }: IProps) => {
 
   return (
     <>
-      <div className="relative bg-slate-700/75 pt-3 rounded-lg mb-4 max-w-[90%] w-[30rem] md:w-[35rem] test-white overflow-hidden">
+      <div className="relative bg-slate-300/25 pt-3 rounded-lg mb-4 max-w-[90%] w-[32rem] md:w-[35rem] test-white overflow-hidden">
         <div className="mx-3 flex items-start pb-3 mb-3 border-b border-white/25">
           {profileImg && (
             <img

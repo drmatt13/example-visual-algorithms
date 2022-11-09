@@ -12,7 +12,7 @@ interface IPost {
 const Page = () => {
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchPosts = useCallback(async () => {
     if (loading) return;
