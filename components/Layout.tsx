@@ -59,7 +59,9 @@ const Layout = ({ children }: Props) => {
           </nav>
         </div>
 
-        <div className="h-full w-full -z-10">{children}</div>
+        <div className="absolute top-20 left-0 h-auto w-full -z-10">
+          {children}
+        </div>
       </div>
     </>
   );
