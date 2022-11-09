@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
-import Post from "./Post";
+import Post from "../../components/infinite-scroll/Post";
 
 interface IPost {
   id: number;
@@ -12,7 +12,7 @@ interface IPost {
 const Page = () => {
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchPosts = useCallback(async () => {
     if (loading) return;
@@ -50,6 +50,7 @@ const Page = () => {
 
   useEffect(() => {
     fetchPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
