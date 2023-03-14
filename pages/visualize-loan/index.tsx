@@ -225,9 +225,19 @@ const Page = () => {
             title: {
               display: true,
               text: "Month",
+              font: {
+                size: 10,
+              },
             },
             grid: {
               color: "rgba(255, 255, 255, 0.075)",
+              lineWidth: 2,
+            },
+            ticks: {
+              display: true,
+              font: {
+                size: 10,
+              },
             },
           },
           y: {
@@ -235,14 +245,22 @@ const Page = () => {
             title: {
               display: true,
               text: "Balance",
+              font: {
+                size: 10,
+              },
             },
             grid: {
               color: "rgba(255, 255, 255, 0.075)",
+              lineWidth: 2,
             },
             min: 0,
             ticks: {
+              display: true,
               callback: function (value: any) {
                 return "$" + value;
+              },
+              font: {
+                size: 10,
               },
             },
           },
@@ -419,7 +437,7 @@ const Page = () => {
                 Calculate
               </div>
               {report && (
-                <div className="text-sm pt-2.5">
+                <div className="text-xs sm:text-sm pt-2.5">
                   <div className="mt-2.5 flex justify-between">
                     <div>Loan Amount: </div>
                     <div className="text-green-400"> ${report.loanAmount}</div>
