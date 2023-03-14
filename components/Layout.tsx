@@ -53,6 +53,15 @@ const Layout = ({ children }: Props) => {
             <Link href="mine-sweeper">
               <a onClick={() => setIsMenuOpen(false)}>Mine Sweeper</a>
             </Link>
+            <Link href="visualize-loan">
+              <a onClick={() => setIsMenuOpen(false)}>Visualize Loan</a>
+            </Link>
+            <Link href="linear-regression">
+              <a onClick={() => setIsMenuOpen(false)}>Linear Regression</a>
+            </Link>
+            <Link href="random-forrest">
+              <a onClick={() => setIsMenuOpen(false)}>Random Forrest</a>
+            </Link>
             <Link href="count-islands">
               <a onClick={() => setIsMenuOpen(false)}>Count Islands</a>
             </Link>
