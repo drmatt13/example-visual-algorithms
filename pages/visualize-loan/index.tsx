@@ -174,6 +174,7 @@ const Page = () => {
     chartContainerRef.current.innerHTML = "";
     const canvas = document.createElement("canvas");
     chartContainerRef.current.appendChild(canvas);
+    console.log(calculatedData);
     new Chart(canvas, {
       type: "line",
       data: {
@@ -234,7 +235,7 @@ const Page = () => {
               lineWidth: 2,
             },
             ticks: {
-              display: true,
+              // display: true,
               font: {
                 size: 10,
               },
@@ -255,7 +256,7 @@ const Page = () => {
             },
             min: 0,
             ticks: {
-              display: true,
+              // display: true,
               callback: function (value: any) {
                 return "$" + value;
               },
