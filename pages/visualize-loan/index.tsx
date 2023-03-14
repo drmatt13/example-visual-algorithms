@@ -255,6 +255,7 @@ const Page = () => {
               lineWidth: 1,
             },
             min: 0,
+            max: monthlyPayment * duration,
             ticks: {
               display: true,
               callback: function (value: any) {
@@ -264,11 +265,12 @@ const Page = () => {
                 size: 10,
               },
               autoSkip: false,
-              stepSize: 1,
-              maxTicksLimit: 10,
+              stepSize: (monthlyPayment * duration) / 11,
             },
           },
         },
+        responsive: true,
+        // maintainAspectRatio: true,
       },
     });
     // create the donut chart
