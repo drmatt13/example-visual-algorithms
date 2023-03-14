@@ -177,112 +177,134 @@ const Page = () => {
     console.log(calculatedData);
     new Chart(canvas, {
       type: "line",
+      // create basic chart
       data: {
-        labels: [...calculatedData.map((data, i) => i), calculatedData.length],
+        labels: [1500, 1600, 1700, 1750, 1800, 1850, 1900, 1950, 1999, 2050],
         datasets: [
           {
-            label: "Loan Balance",
-            data: [
-              principal,
-              ...calculatedData.map((data) => data.endingBalance),
-            ],
-            pointBorderWidth: 0,
-            borderColor: "rgb(60, 150, 255)",
-            backgroundColor: "rgba(60, 150, 255)",
-            borderWidth: 2,
-            tension: 0.1,
-          },
-          {
-            label: "Total Paid",
-            data: [
-              0,
-              ...calculatedData.map((data, i) => {
-                return monthlyPayment * (i + 1);
-              }),
-            ],
-            pointBorderWidth: 0,
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132)",
-            borderWidth: 2,
-            tension: 0.1,
+            data: [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
+            label: "Africa",
+            borderColor: "#3e95cd",
+            fill: false,
           },
         ],
       },
-      // dont allow the y axis to go below 0
       options: {
-        elements: {
-          point: {
-            radius: 1,
-          },
-        },
-        plugins: {
-          tooltip: {
-            callbacks: {
-              title: (context) => {
-                return `${context[0].dataset.label}`;
-              },
-              label: (context) => {
-                return ` $${+context.parsed.y.toFixed(2)}`;
-              },
-            },
-          },
-          legend: {
-            labels: {
-              color: "white",
-            },
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        borderColor: "rgba(255, 255, 255, 0.075)",
-        scales: {
-          // name of the x axis
-          x: {
-            title: {
-              display: true,
-              text: "Month",
-              font: {
-                size: 10,
-              },
-            },
-            grid: {
-              color: "rgba(255, 255, 255, 0.075)",
-              lineWidth: 1,
-            },
-            ticks: {
-              // display: true,
-              font: {
-                size: 10,
-              },
-            },
-          },
-          y: {
-            // name of the y axis
-            title: {
-              display: true,
-              text: "Balance",
-              font: {
-                size: 10,
-              },
-            },
-            grid: {
-              color: "rgba(255, 255, 255, 0.075)",
-              lineWidth: 2,
-            },
-            min: 0,
-            ticks: {
-              // display: true,
-              callback: function (value: any) {
-                return "$" + value;
-              },
-              font: {
-                size: 10,
-              },
-              count: 11,
-            },
-          },
-        },
+        // title: {
+        //   display: true,
+        //   text: 'World population per region (in millions)'
+        // }
       },
+      // data: {
+      //   labels: [...calculatedData.map((data, i) => i), calculatedData.length],
+      //   datasets: [
+      //     {
+      //       label: "Loan Balance",
+      //       data: [
+      //         principal,
+      //         ...calculatedData.map((data) => data.endingBalance),
+      //       ],
+      //       pointBorderWidth: 5,
+      //       pointHitRadius: 3,
+      //       pointBorderColor: "rgba(0,0,0,0)",
+      //       borderColor: "rgb(60, 150, 255)",
+      //       backgroundColor: "rgba(60, 150, 255)",
+      //       borderWidth: 2,
+      //       tension: 0.1,
+      //     },
+      //     {
+      //       label: "Total Paid",
+      //       data: [
+      //         0,
+      //         ...calculatedData.map((data, i) => {
+      //           return monthlyPayment * (i + 1);
+      //         }),
+      //       ],
+      //       pointBorderWidth: 5,
+      //       pointHitRadius: 3,
+      //       pointBorderColor: "rgba(0,0,0,0)",
+      //       borderColor: "rgb(255, 99, 132)",
+      //       backgroundColor: "rgba(255, 99, 132)",
+      //       borderWidth: 2,
+      //       tension: 0.1,
+      //     },
+      //   ],
+      // },
+      // // dont allow the y axis to go below 0
+      // options: {
+      //   elements: {
+      //     point: {
+      //       radius: 1,
+      //     },
+      //   },
+      //   plugins: {
+      //     tooltip: {
+      //       callbacks: {
+      //         title: (context) => {
+      //           return `${context[0].dataset.label}`;
+      //         },
+      //         label: (context) => {
+      //           return ` $${+context.parsed.y.toFixed(2)}`;
+      //         },
+      //       },
+      //     },
+      //     legend: {
+      //       labels: {
+      //         color: "white",
+      //       },
+      //     },
+      //   },
+      //   responsive: true,
+      //   maintainAspectRatio: false,
+      //   borderColor: "rgba(255, 255, 255, 0.075)",
+      //   scales: {
+      //     // name of the x axis
+      //     x: {
+      //       title: {
+      //         display: true,
+      //         text: "Month",
+      //         font: {
+      //           size: 10,
+      //         },
+      //       },
+      //       grid: {
+      //         color: "rgba(255, 255, 255, 0.075)",
+      //         lineWidth: 1,
+      //       },
+      //       ticks: {
+      //         // display: true,
+      //         font: {
+      //           size: 10,
+      //         },
+      //       },
+      //     },
+      //     y: {
+      //       // name of the y axis
+      //       title: {
+      //         display: true,
+      //         text: "Balance",
+      //         font: {
+      //           size: 10,
+      //         },
+      //       },
+      //       grid: {
+      //         color: "rgba(255, 255, 255, 0.075)",
+      //         lineWidth: 2,
+      //       },
+      //       min: 0,
+      //       ticks: {
+      //         // display: true,
+      //         callback: function (value: any) {
+      //           return "$" + value;
+      //         },
+      //         font: {
+      //           size: 10,
+      //         },
+      //         count: 11,
+      //       },
+      //     },
+      //   },
+      // },
     });
     // create the donut chart
     if (donutContainerRef.current === null) return;
