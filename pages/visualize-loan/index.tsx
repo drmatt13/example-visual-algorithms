@@ -238,6 +238,7 @@ const Page = () => {
               font: {
                 size: 10,
               },
+              autoSkip: true,
             },
           },
           y: {
@@ -264,6 +265,7 @@ const Page = () => {
               font: {
                 size: 10,
               },
+              autoSkip: false,
             },
           },
         },
@@ -478,7 +480,7 @@ const Page = () => {
           </div>
         </div>
         {/*  */}
-        <div className="mt-4 flex flex-col mb-10 text-sm">
+        <div className="mt-4 flex flex-col text-sm">
           {calculatedData.length > 0 && (
             <>
               <div className="flex justify-between px-2 py-1.5 bg-white/25">
