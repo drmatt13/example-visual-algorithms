@@ -216,11 +216,9 @@ const Page = () => {
             },
           },
         },
-        responsive: true,
         maintainAspectRatio: false,
         borderColor: "rgba(255, 255, 255, 0.075)",
         scales: {
-          // name of the x axis
           x: {
             title: {
               display: true,
@@ -239,10 +237,12 @@ const Page = () => {
                 size: 10,
               },
               autoSkip: true,
+              maxRotation: 0,
+              minRotation: 0,
             },
           },
           y: {
-            // name of the y axis
+            // includeZero: true,
             title: {
               display: true,
               text: "Balance",
@@ -260,12 +260,12 @@ const Page = () => {
               callback: function (value: any) {
                 return "$" + Number.parseInt(value);
               },
-              // align: "start",
-              count: 11,
               font: {
                 size: 10,
               },
               autoSkip: false,
+              stepSize: 1,
+              maxTicksLimit: 10,
             },
           },
         },
@@ -419,7 +419,7 @@ const Page = () => {
           <div className="flex-1 flex justify-center">
             {calculatedData.length > 0 && (
               <div
-                className="/bg-white/25 h-48 sm:h-60 max-w-[25vw] sm:max-w-[35vw] md:max-w-[40vw]"
+                className="/bg-white/25 h-48 sm:h-60 max-w-[30vw] sm:max-w-[35vw] md:max-w-[40vw]"
                 ref={donutContainerRef}
               />
             )}
