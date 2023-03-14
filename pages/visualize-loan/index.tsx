@@ -1,8 +1,7 @@
-import Chart from "chart.js/auto";
-import Head from "next/head";
 import React from "react";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import Chart from "chart.js/auto";
 
 function parseNumberString(numString: string): number {
   return parseInt(numString.replace(/,/g, ""), 10);
@@ -232,7 +231,7 @@ const Page = () => {
             },
             grid: {
               color: "rgba(255, 255, 255, 0.075)",
-              lineWidth: 1,
+              lineWidth: 2,
             },
             ticks: {
               display: true,
@@ -252,15 +251,14 @@ const Page = () => {
             },
             grid: {
               color: "rgba(255, 255, 255, 0.075)",
-              lineWidth: 1,
+              lineWidth: 2,
             },
             min: 0,
             ticks: {
               display: true,
-              // callback: function (value: any) {
-              //   return "$" + value;
-              // },
-              count: 11,
+              callback: function (value: any) {
+                return "$" + value;
+              },
               font: {
                 size: 10,
               },
@@ -333,203 +331,198 @@ const Page = () => {
   };
 
   return (
-    <>
-      <div className="w-full flex flex-col items-center">
-        <div className="h-full w-full sm:w-4/5 max-w-3xl flex flex-col text-sm sm:text-base">
-          <div
-            className="w-full h-80 md:h-96 bg-white/10 sm:rounded shadow shadow-white/10"
-            ref={chartContainerRef}
-          ></div>
-          <div className="w-full mt-4 flex justify-around">
-            <div className="w-full flex flex-col md:flex-row md:justify-around">
-              <div className="flex flex-col items-center">
-                <div className="mb-2">Loan Amount</div>
-                <input
-                  type="number"
-                  className="px-1 w-24"
-                  value={principal}
-                  onChange={(e) => setPrincipal(parseInt(e.target.value))}
-                />
-              </div>
-              <div className="mt-4 md:mt-0 flex flex-col items-center">
-                <div className="mb-2">Interest %</div>
-                <input
-                  type="number"
-                  className="px-1 w-24"
-                  value={interestRate}
-                  onChange={(e) => setInterestRate(+e.target.value)}
-                  step={0.1}
-                />
-              </div>
+    <div className="w-full flex flex-col items-center">
+      <div className="h-full w-full sm:w-4/5 max-w-3xl flex flex-col text-sm sm:text-base">
+        <div
+          className="w-full h-80 md:h-96 bg-white/10 sm:rounded shadow shadow-white/10"
+          ref={chartContainerRef}
+        ></div>
+        <div className="w-full mt-4 flex justify-around">
+          <div className="w-full flex flex-col md:flex-row md:justify-around">
+            <div className="flex flex-col items-center">
+              <div className="mb-2">Loan Amount</div>
+              <input
+                type="number"
+                className="px-1 w-24"
+                value={principal}
+                onChange={(e) => setPrincipal(parseInt(e.target.value))}
+              />
             </div>
-            <div className="w-full flex flex-col md:flex-row md:justify-around">
-              <div className="flex flex-col items-center">
-                <div className="mb-2">Duration</div>
-                <div className="flex">
-                  <input
-                    type="number"
-                    className="px-1 w-12"
-                    value={duration}
-                    onChange={(e) => setDuration(parseInt(e.target.value))}
-                  />
-                  <div
-                    className={`${
-                      durationType === "M" ? "bg-blue-700" : "bg-white/25"
-                    } ml-2.5 w-6 h-6 flex justify-center items-center rounded cursor-pointer hover:bg-blue-600 transition-colors ease-out`}
-                    onClick={() => setDurationType("M")}
-                  >
-                    M
-                  </div>
-                  <div
-                    className={`${
-                      durationType === "Y" ? "bg-blue-700" : "bg-white/25"
-                    } ml-2.5 w-6 h-6 flex justify-center items-center rounded cursor-pointer hover:bg-blue-600 transition-colors ease-out`}
-                    onClick={() => setDurationType("Y")}
-                  >
-                    Y
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 md:mt-0 flex flex-col items-center">
-                <div className="mb-2 items-center">Compound Rate</div>
-                <div className="flex">
-                  <div
-                    className={`${
-                      compoundRate === "D" ? "bg-blue-700" : "bg-white/25"
-                    } w-6 h-6 flex justify-center items-center rounded cursor-pointer hover:bg-blue-600 transition-colors ease-out`}
-                    onClick={() => setCompoundRate("D")}
-                  >
-                    D
-                  </div>
-                  <div
-                    className={`${
-                      compoundRate === "M" ? "bg-blue-700" : "bg-white/25"
-                    } ml-2.5 w-6 h-6 flex justify-center items-center rounded cursor-pointer hover:bg-blue-600 transition-colors ease-out`}
-                    onClick={() => setCompoundRate("M")}
-                  >
-                    M
-                  </div>
-                </div>
-              </div>
+            <div className="mt-4 md:mt-0 flex flex-col items-center">
+              <div className="mb-2">Interest %</div>
+              <input
+                type="number"
+                className="px-1 w-24"
+                value={interestRate}
+                onChange={(e) => setInterestRate(+e.target.value)}
+                step={0.1}
+              />
             </div>
           </div>
-          {/*  */}
-          <div className="mt-8 mb-2 flex justify-between items-start ">
-            <div className="flex-1 flex justify-center">
-              {calculatedData.length > 0 && (
-                <div
-                  className="/bg-white/25 h-48 sm:h-60 max-w-[25vw] sm:max-w-[35vw] md:max-w-[40vw]"
-                  ref={donutContainerRef}
+          <div className="w-full flex flex-col md:flex-row md:justify-around">
+            <div className="flex flex-col items-center">
+              <div className="mb-2">Duration</div>
+              <div className="flex">
+                <input
+                  type="number"
+                  className="px-1 w-12"
+                  value={duration}
+                  onChange={(e) => setDuration(parseInt(e.target.value))}
                 />
-              )}
-            </div>
-            <div className="flex-1 flex justify-center">
-              <div>
                 <div
                   className={`${
-                    principal > 0 && interestRate > 0 && duration > 0
-                      ? "bg-blue-700 hover:bg-blue-600 cursor-pointer"
-                      : "bg-white/25 cursor-not-allowed"
-                  } px-14 py-2.5  rounded-lg transition-colors ease-out`}
-                  onClick={() => {
-                    if (principal > 0 && interestRate > 0 && duration > 0) {
-                      generateData();
-                    }
-                  }}
+                    durationType === "M" ? "bg-blue-700" : "bg-white/25"
+                  } ml-2.5 w-6 h-6 flex justify-center items-center rounded cursor-pointer hover:bg-blue-600 transition-colors ease-out`}
+                  onClick={() => setDurationType("M")}
                 >
-                  Calculate
+                  M
                 </div>
-                {report && (
-                  <div className="text-xs sm:text-sm pt-2.5">
-                    <div className="mt-2.5 flex justify-between">
-                      <div>Loan Amount: </div>
-                      <div className="text-green-400">
-                        {" "}
-                        ${report.loanAmount}
-                      </div>
-                    </div>
-                    <div className="mt-2.5 flex justify-between">
-                      <div>Interest Rate:</div>
-                      <div> {report.interestRate}%</div>
-                    </div>
-                    <div className="mt-2.5 flex justify-between">
-                      <div>Duration:</div>
-                      <div> {report.duration}</div>
-                    </div>
-                    <div className="mt-2.5 flex justify-between">
-                      <div>Compound:</div>
-                      <div>{report.compound}</div>
-                    </div>
-                    <div className="mt-2.5 flex justify-between">
-                      <div>Total Interest:</div>
-                      <div className="text-red-400">
-                        $
-                        {(
-                          monthlyPayment * calculatedData.length -
-                          principal
-                        ).toFixed(2)}
-                      </div>
-                    </div>
-                    <div className="mt-2.5 flex justify-between">
-                      <div>Total Cost:</div>
-                      <div className="text-green-400">
-                        ${(monthlyPayment * calculatedData.length).toFixed(2)}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <div
+                  className={`${
+                    durationType === "Y" ? "bg-blue-700" : "bg-white/25"
+                  } ml-2.5 w-6 h-6 flex justify-center items-center rounded cursor-pointer hover:bg-blue-600 transition-colors ease-out`}
+                  onClick={() => setDurationType("Y")}
+                >
+                  Y
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 md:mt-0 flex flex-col items-center">
+              <div className="mb-2 items-center">Compound Rate</div>
+              <div className="flex">
+                <div
+                  className={`${
+                    compoundRate === "D" ? "bg-blue-700" : "bg-white/25"
+                  } w-6 h-6 flex justify-center items-center rounded cursor-pointer hover:bg-blue-600 transition-colors ease-out`}
+                  onClick={() => setCompoundRate("D")}
+                >
+                  D
+                </div>
+                <div
+                  className={`${
+                    compoundRate === "M" ? "bg-blue-700" : "bg-white/25"
+                  } ml-2.5 w-6 h-6 flex justify-center items-center rounded cursor-pointer hover:bg-blue-600 transition-colors ease-out`}
+                  onClick={() => setCompoundRate("M")}
+                >
+                  M
+                </div>
               </div>
             </div>
           </div>
-          {/*  */}
-          <div className="mt-4 flex flex-col mb-10 text-sm">
+        </div>
+        {/*  */}
+        <div className="mt-8 mb-2 flex justify-between items-start ">
+          <div className="flex-1 flex justify-center">
             {calculatedData.length > 0 && (
-              <>
-                <div className="flex justify-between px-2 py-1.5 bg-white/25">
-                  <div className="w-12">#</div>
-                  {/* <div className="flex-1 text-center truncate">Date</div> */}
-                  <div className="flex-1 text-center truncate">
-                    Beginning Balance
-                  </div>
-                  <div className="flex-1 text-center truncate">Interest</div>
-                  <div className="flex-1 text-center truncate">Principal</div>
-                  <div className="flex-1 text-center truncate">
-                    Ending Balance
-                  </div>
-                </div>
-                {calculatedData.map((data, i) => {
-                  return (
-                    <div
-                      key={i}
-                      className={`${
-                        i % 2 === 0 ? "bg-white/10" : "bg-white/25"
-                      } flex justify-between px-2 py-1.5`}
-                    >
-                      <div className="w-12 /text-yellow-400">{i + 1}</div>
-                      {/* <div className="flex-1 text-center">
-                    {data.date.toISOString().substr(0, 10)}
-                  </div> */}
-                      <div className="flex-1 text-center">
-                        ${data.beginningBalance.toFixed(2)}
-                      </div>
-                      <div className="flex-1 text-center text-red-400">
-                        ${data.interest.toFixed(2)}
-                      </div>
-                      <div className="flex-1 text-center text-green-400">
-                        ${data.principal.toFixed(2)}
-                      </div>
-                      <div className="flex-1 text-center">
-                        ${Math.abs(+data.endingBalance.toFixed(2))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </>
+              <div
+                className="/bg-white/25 h-48 sm:h-60 max-w-[25vw] sm:max-w-[35vw] md:max-w-[40vw]"
+                ref={donutContainerRef}
+              />
             )}
           </div>
+          <div className="flex-1 flex justify-center">
+            <div>
+              <div
+                className={`${
+                  principal > 0 && interestRate > 0 && duration > 0
+                    ? "bg-blue-700 hover:bg-blue-600 cursor-pointer"
+                    : "bg-white/25 cursor-not-allowed"
+                } px-14 py-2.5  rounded-lg transition-colors ease-out`}
+                onClick={() => {
+                  if (principal > 0 && interestRate > 0 && duration > 0) {
+                    generateData();
+                  }
+                }}
+              >
+                Calculate
+              </div>
+              {report && (
+                <div className="text-xs sm:text-sm pt-2.5">
+                  <div className="mt-2.5 flex justify-between">
+                    <div>Loan Amount: </div>
+                    <div className="text-green-400"> ${report.loanAmount}</div>
+                  </div>
+                  <div className="mt-2.5 flex justify-between">
+                    <div>Interest Rate:</div>
+                    <div> {report.interestRate}%</div>
+                  </div>
+                  <div className="mt-2.5 flex justify-between">
+                    <div>Duration:</div>
+                    <div> {report.duration}</div>
+                  </div>
+                  <div className="mt-2.5 flex justify-between">
+                    <div>Compound:</div>
+                    <div>{report.compound}</div>
+                  </div>
+                  <div className="mt-2.5 flex justify-between">
+                    <div>Total Interest:</div>
+                    <div className="text-red-400">
+                      $
+                      {(
+                        monthlyPayment * calculatedData.length -
+                        principal
+                      ).toFixed(2)}
+                    </div>
+                  </div>
+                  <div className="mt-2.5 flex justify-between">
+                    <div>Total Cost:</div>
+                    <div className="text-green-400">
+                      ${(monthlyPayment * calculatedData.length).toFixed(2)}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        {/*  */}
+        <div className="mt-4 flex flex-col mb-10 text-sm">
+          {calculatedData.length > 0 && (
+            <>
+              <div className="flex justify-between px-2 py-1.5 bg-white/25">
+                <div className="w-12">#</div>
+                {/* <div className="flex-1 text-center truncate">Date</div> */}
+                <div className="flex-1 text-center truncate">
+                  Beginning Balance
+                </div>
+                <div className="flex-1 text-center truncate">Interest</div>
+                <div className="flex-1 text-center truncate">Principal</div>
+                <div className="flex-1 text-center truncate">
+                  Ending Balance
+                </div>
+              </div>
+              {calculatedData.map((data, i) => {
+                return (
+                  <div
+                    key={i}
+                    className={`${
+                      i % 2 === 0 ? "bg-white/10" : "bg-white/25"
+                    } flex justify-between px-2 py-1.5`}
+                  >
+                    <div className="w-12 /text-yellow-400">{i + 1}</div>
+                    {/* <div className="flex-1 text-center">
+                    {data.date.toISOString().substr(0, 10)}
+                  </div> */}
+                    <div className="flex-1 text-center">
+                      ${data.beginningBalance.toFixed(2)}
+                    </div>
+                    <div className="flex-1 text-center text-red-400">
+                      ${data.interest.toFixed(2)}
+                    </div>
+                    <div className="flex-1 text-center text-green-400">
+                      ${data.principal.toFixed(2)}
+                    </div>
+                    <div className="flex-1 text-center">
+                      ${Math.abs(+data.endingBalance.toFixed(2))}
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
