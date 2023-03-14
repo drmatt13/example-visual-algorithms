@@ -262,6 +262,7 @@ const Page = () => {
               font: {
                 size: 10,
               },
+              count: 11,
             },
           },
         },
