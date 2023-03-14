@@ -206,6 +206,12 @@ const Page = () => {
       },
       // dont allow the y axis to go below 0
       options: {
+        // create a Progressive Line animation
+        // animation: {
+        //   duration: 0,
+
+        // },
+
         elements: {
           point: {
             radius: 1,
