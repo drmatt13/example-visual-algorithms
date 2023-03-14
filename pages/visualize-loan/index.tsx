@@ -79,9 +79,9 @@ function createMonthlyAmortizationSchedule(
 const Page = () => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const donutContainerRef = useRef<HTMLDivElement>(null);
-  const [principal, setPrincipal] = useState(380000);
-  const [interestRate, setInterestRate] = useState(7);
-  const [duration, setDuration] = useState(30);
+  const [principal, setPrincipal] = useState(10000);
+  const [interestRate, setInterestRate] = useState(22);
+  const [duration, setDuration] = useState(6);
   const [durationType, setDurationType] = useState<"M" | "Y">("Y");
   const [compoundRate, setCompoundRate] = useState<"D" | "M">("D");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -188,7 +188,7 @@ const Page = () => {
             ],
             pointBorderWidth: 0,
             borderColor: "rgb(60, 150, 255)",
-            backgroundColor: "rgba(60, 150, 255, 0.25)",
+            backgroundColor: "rgba(60, 150, 255)",
             borderWidth: 2,
             tension: 0.1,
           },
@@ -202,7 +202,7 @@ const Page = () => {
             ],
             pointBorderWidth: 0,
             borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.25)",
+            backgroundColor: "rgba(255, 99, 132)",
             borderWidth: 2,
             tension: 0.1,
           },
@@ -210,7 +210,22 @@ const Page = () => {
       },
       // dont allow the y axis to go below 0
       options: {
+        elements: {
+          point: {
+            radius: 1,
+          },
+        },
         plugins: {
+          tooltip: {
+            callbacks: {
+              title: (context) => {
+                return `${context[0].dataset.label}`;
+              },
+              label: (context) => {
+                return ` $${+context.parsed.y.toFixed(2)}`;
+              },
+            },
+          },
           legend: {
             labels: {
               color: "white",
@@ -232,7 +247,7 @@ const Page = () => {
             },
             grid: {
               color: "rgba(255, 255, 255, 0.075)",
-              lineWidth: 2,
+              lineWidth: 1,
             },
             ticks: {
               // display: true,
@@ -304,6 +319,9 @@ const Page = () => {
           },
           tooltip: {
             callbacks: {
+              title: (context) => {
+                return `${context[0].label}`;
+              },
               label: function (context: any) {
                 const label = context.label;
                 const value = parseNumberString(context.formattedValue);
@@ -345,7 +363,7 @@ const Page = () => {
               <div className="mb-2">Loan Amount</div>
               <input
                 type="number"
-                className="px-1 w-24"
+                className="px-1 w-24 py-0.5 sm:py-0"
                 value={principal}
                 onChange={(e) => setPrincipal(parseInt(e.target.value))}
               />
@@ -354,7 +372,7 @@ const Page = () => {
               <div className="mb-2">Interest %</div>
               <input
                 type="number"
-                className="px-1 w-24"
+                className="px-1 w-24 py-0.5 sm:py-0"
                 value={interestRate}
                 onChange={(e) => setInterestRate(+e.target.value)}
                 step={0.1}
@@ -413,11 +431,11 @@ const Page = () => {
           </div>
         </div>
         {/*  */}
-        <div className="mt-8 mb-2 flex justify-between items-start ">
-          <div className="flex-1 flex justify-center">
+        <div className="mt-8 mb-2 flex justify-between">
+          <div className="flex-1 sm:w-full flex justify-center items-end">
             {calculatedData.length > 0 && (
               <div
-                className="/bg-white/25 h-48 sm:h-60 max-w-[25vw] sm:max-w-[35vw] md:max-w-[40vw]"
+                className="/bg-white/25 h-52 sm:h-60 max-w-[75%] sm:max-w-[35vw] md:max-w-[40vw]"
                 ref={donutContainerRef}
               />
             )}
@@ -429,7 +447,7 @@ const Page = () => {
                   principal > 0 && interestRate > 0 && duration > 0
                     ? "bg-blue-700 hover:bg-blue-600 cursor-pointer"
                     : "bg-white/25 cursor-not-allowed"
-                } px-14 py-2.5  rounded-lg transition-colors ease-out`}
+                } mx-6 sm:mx-4 px-8 sm:px-14 py-2 sm:py-2.5 text-xs sm:text-sm rounded sm:rounded-lg transition-colors ease-out`}
                 onClick={() => {
                   if (principal > 0 && interestRate > 0 && duration > 0) {
                     generateData();
@@ -439,7 +457,7 @@ const Page = () => {
                 Calculate
               </div>
               {report && (
-                <div className="text-xs sm:text-sm pt-2.5">
+                <div className="text-xs sm:text-[.8rem] pt-2.5">
                   <div className="mt-2.5 flex justify-between">
                     <div>Loan Amount: </div>
                     <div className="text-green-400"> ${report.loanAmount}</div>
@@ -457,6 +475,12 @@ const Page = () => {
                     <div>{report.compound}</div>
                   </div>
                   <div className="mt-2.5 flex justify-between">
+                    <div>Monthly Payment:</div>
+                    <div className="text-red-400">
+                      ${monthlyPayment.toFixed(2)}
+                    </div>
+                  </div>
+                  <div className="mt-2.5 flex justify-between">
                     <div>Total Interest:</div>
                     <div className="text-red-400">
                       $
@@ -468,7 +492,7 @@ const Page = () => {
                   </div>
                   <div className="mt-2.5 flex justify-between">
                     <div>Total Cost:</div>
-                    <div className="text-green-400">
+                    <div className="text-red-400">
                       ${(monthlyPayment * calculatedData.length).toFixed(2)}
                     </div>
                   </div>
