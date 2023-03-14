@@ -216,9 +216,11 @@ const Page = () => {
             },
           },
         },
+        responsive: true,
         maintainAspectRatio: false,
         borderColor: "rgba(255, 255, 255, 0.075)",
         scales: {
+          // name of the x axis
           x: {
             title: {
               display: true,
@@ -236,13 +238,10 @@ const Page = () => {
               font: {
                 size: 10,
               },
-              autoSkip: true,
-              maxRotation: 0,
-              minRotation: 0,
             },
           },
           y: {
-            // includeZero: true,
+            // name of the y axis
             title: {
               display: true,
               text: "Balance",
@@ -255,22 +254,17 @@ const Page = () => {
               lineWidth: 1,
             },
             min: 0,
-            max: monthlyPayment * duration,
             ticks: {
               display: true,
               callback: function (value: any) {
-                return "$" + Number.parseInt(value);
+                return "$" + value;
               },
               font: {
                 size: 10,
               },
-              autoSkip: false,
-              stepSize: (monthlyPayment * duration) / 11,
             },
           },
         },
-        responsive: true,
-        // maintainAspectRatio: true,
       },
     });
     // create the donut chart
@@ -421,7 +415,7 @@ const Page = () => {
           <div className="flex-1 flex justify-center">
             {calculatedData.length > 0 && (
               <div
-                className="/bg-white/25 h-48 sm:h-60 max-w-[30vw] sm:max-w-[35vw] md:max-w-[40vw]"
+                className="/bg-white/25 h-48 sm:h-60 max-w-[25vw] sm:max-w-[35vw] md:max-w-[40vw]"
                 ref={donutContainerRef}
               />
             )}
@@ -482,7 +476,7 @@ const Page = () => {
           </div>
         </div>
         {/*  */}
-        <div className="mt-4 flex flex-col text-sm">
+        <div className="mt-4 flex flex-col mb-10 text-sm">
           {calculatedData.length > 0 && (
             <>
               <div className="flex justify-between px-2 py-1.5 bg-white/25">
