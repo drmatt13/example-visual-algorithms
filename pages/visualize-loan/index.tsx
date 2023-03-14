@@ -36,6 +36,13 @@ const Page = () => {
     | undefined
   >();
 
+  function removeTrailingZeros(numString: string): string {
+    if (numString.endsWith(".00")) {
+      return numString.slice(0, -3);
+    }
+    return numString;
+  }
+
   function parseNumberString(numString: string): number {
     return parseInt(numString.replace(/,/g, ""), 10);
   }
@@ -161,24 +168,6 @@ const Page = () => {
     console.log(calculatedData);
     new Chart(canvas, {
       type: "line",
-      // create basic chart
-      // data: {
-      //   labels: [1500, 1600, 1700, 1750, 1800, 1850, 1900, 1950, 1999, 2050],
-      //   datasets: [
-      //     {
-      //       data: [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
-      //       label: "test1",
-      //       borderColor: "#3e95cd",
-      //       fill: false,
-      //     },
-      //   ],
-      // },
-      // options: {
-      // title: {
-      //   display: true,
-      //   text: 'World population per region (in millions)'
-      // }
-      // },
       // ********************************************************************************
       data: {
         labels: [...calculatedData.map((data, i) => i), calculatedData.length],
@@ -229,7 +218,7 @@ const Page = () => {
                 return `${context[0].dataset.label}`;
               },
               label: (context) => {
-                return ` $${+context.parsed.y.toFixed(2)}`;
+                return ` $${removeTrailingZeros(context.parsed.y.toFixed(2))}`;
               },
             },
           },
@@ -512,7 +501,7 @@ const Page = () => {
           </div>
         </div>
         {/*  */}
-        <div className="mt-4 flex flex-col mb-10 text-sm">
+        <div className="mt-4 flex flex-col /mb-10 text-sm">
           {calculatedData.length > 0 && (
             <>
               <div className="flex justify-between px-2 py-1.5 bg-white/25">
