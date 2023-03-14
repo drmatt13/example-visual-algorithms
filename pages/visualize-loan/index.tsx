@@ -231,7 +231,7 @@ const Page = () => {
             },
             grid: {
               color: "rgba(255, 255, 255, 0.075)",
-              lineWidth: 2,
+              lineWidth: 1,
             },
             ticks: {
               display: true,
@@ -251,14 +251,16 @@ const Page = () => {
             },
             grid: {
               color: "rgba(255, 255, 255, 0.075)",
-              lineWidth: 2,
+              lineWidth: 1,
             },
             min: 0,
             ticks: {
               display: true,
               callback: function (value: any) {
-                return "$" + value;
+                return "$" + Number.parseInt(value);
               },
+              // align: "start",
+              count: 11,
               font: {
                 size: 10,
               },
@@ -415,7 +417,7 @@ const Page = () => {
           <div className="flex-1 flex justify-center">
             {calculatedData.length > 0 && (
               <div
-                className="/bg-white/25 h-60 max-w-[35vw] md:max-w-[40vw]"
+                className="/bg-white/25 h-48 sm:h-60 max-w-[25vw] sm:max-w-[35vw] md:max-w-[40vw]"
                 ref={donutContainerRef}
               />
             )}
