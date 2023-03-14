@@ -3,79 +3,6 @@ import React from "react";
 import { useEffect, useRef, useState, useCallback } from "react";
 import Chart from "chart.js/auto";
 
-function parseNumberString(numString: string): number {
-  return parseInt(numString.replace(/,/g, ""), 10);
-}
-
-function percentageDifference(a: number, b: number): number {
-  const difference = Math.abs(a - b);
-  const average = (a + b) / 2;
-  return (difference / average) * 100;
-}
-
-function createMonthlyAmortizationSchedule(
-  interestRate: number, // Annual interest rate as a decimal
-  durationMonths: number, // Total number of months for the loan
-  compoundRate: "daily" | "monthly", // Interest compounding frequency
-  principal: number, // Starting principal amount
-  startDate: Date // Date the loan starts
-): Array<{
-  monthName: string;
-  date: Date;
-  beginningBalance: number;
-  interest: number;
-  principal: number;
-  endingBalance: number;
-}> {
-  // Calculate the monthly interest rate based on the compounding frequency
-  let monthlyInterestRate: number;
-  switch (compoundRate) {
-    case "daily":
-      monthlyInterestRate = Math.pow(1 + interestRate / 365, 365 / 12) - 1;
-      break;
-    case "monthly":
-      monthlyInterestRate = Math.pow(1 + interestRate / 12, 1) - 1;
-      break;
-    default:
-      throw new Error(`Invalid compound rate: ${compoundRate}`);
-  }
-
-  // Calculate the monthly payment using the formula for the present value of an annuity
-  const monthlyPayment =
-    (principal * monthlyInterestRate) /
-    (1 - Math.pow(1 + monthlyInterestRate, -durationMonths));
-
-  // Initialize the array that will hold the amortization schedule
-  const amortizationSchedule = [];
-
-  // Initialize the balance to the principal amount
-  let balance = principal;
-
-  // Loop over each month and calculate the details of the payment
-  for (let i = 0; i < durationMonths; i++) {
-    // Calculate the interest for this month
-    const interest = balance * monthlyInterestRate;
-
-    // Calculate the principal for this month
-    const principal = monthlyPayment - interest;
-
-    // Calculate the new balance after the payment
-    balance -= principal;
-
-    // Add the details for this month to the amortization schedule
-    amortizationSchedule.push({
-      monthName: startDate.toLocaleString("default", { month: "long" }),
-      date: new Date(startDate.getFullYear(), startDate.getMonth() + i, 1),
-      beginningBalance: balance + principal,
-      interest,
-      principal,
-      endingBalance: balance,
-    });
-  }
-
-  return amortizationSchedule;
-}
-
 const Page = () => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const donutContainerRef = useRef<HTMLDivElement>(null);
@@ -108,6 +35,63 @@ const Page = () => {
       }
     | undefined
   >();
+
+  function parseNumberString(numString: string): number {
+    return parseInt(numString.replace(/,/g, ""), 10);
+  }
+
+  function percentageDifference(a: number, b: number): number {
+    const difference = Math.abs(a - b);
+    const average = (a + b) / 2;
+    return (difference / average) * 100;
+  }
+
+  function createMonthlyAmortizationSchedule(
+    interestRate: number, // Annual interest rate as a decimal
+    durationMonths: number, // Total number of months for the loan
+    compoundRate: "daily" | "monthly", // Interest compounding frequency
+    principal: number, // Starting principal amount
+    startDate: Date // Date the loan starts
+  ): Array<{
+    monthName: string;
+    date: Date;
+    beginningBalance: number;
+    interest: number;
+    principal: number;
+    endingBalance: number;
+  }> {
+    let monthlyInterestRate: number;
+    switch (compoundRate) {
+      case "daily":
+        monthlyInterestRate = Math.pow(1 + interestRate / 365, 365 / 12) - 1;
+        break;
+      case "monthly":
+        monthlyInterestRate = Math.pow(1 + interestRate / 12, 1) - 1;
+        break;
+      default:
+        throw new Error(`Invalid compound rate: ${compoundRate}`);
+    }
+    const monthlyPayment =
+      (principal * monthlyInterestRate) /
+      (1 - Math.pow(1 + monthlyInterestRate, -durationMonths));
+    const amortizationSchedule = [];
+    let balance = principal;
+    for (let i = 0; i < durationMonths; i++) {
+      const interest = balance * monthlyInterestRate;
+      const principal = monthlyPayment - interest;
+      balance -= principal;
+      amortizationSchedule.push({
+        monthName: startDate.toLocaleString("default", { month: "long" }),
+        date: new Date(startDate.getFullYear(), startDate.getMonth() + i, 1),
+        beginningBalance: balance + principal,
+        interest,
+        principal,
+        endingBalance: balance,
+      });
+    }
+
+    return amortizationSchedule;
+  }
 
   // calculate the amount of money you will pay each month to successfully pay off your loan in the given duration and interest rate
   const calculateMonthlyPayment = useCallback(() => {
@@ -183,18 +167,19 @@ const Page = () => {
         datasets: [
           {
             data: [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
-            label: "Africa",
+            label: "test1",
             borderColor: "#3e95cd",
             fill: false,
           },
         ],
       },
-      options: {
-        // title: {
-        //   display: true,
-        //   text: 'World population per region (in millions)'
-        // }
-      },
+      // options: {
+      // title: {
+      //   display: true,
+      //   text: 'World population per region (in millions)'
+      // }
+      // },
+      // ********************************************************************************
       // data: {
       //   labels: [...calculatedData.map((data, i) => i), calculatedData.length],
       //   datasets: [
@@ -305,61 +290,64 @@ const Page = () => {
       //     },
       //   },
       // },
+      // ********************************************************************************
     });
+    // ********************************************************************************
     // create the donut chart
-    if (donutContainerRef.current === null) return;
-    donutContainerRef.current.innerHTML = "";
-    const donutCanvas = document.createElement("canvas");
-    donutContainerRef.current.appendChild(donutCanvas);
-    new Chart(donutCanvas, {
-      type: "doughnut",
-      // different labels for the different parts of the donut chart
-      data: {
-        labels: ["Principle", "Interest"],
-        datasets: [
-          {
-            label: "Loan Balance",
-            data: [
-              principal,
-              monthlyPayment * calculatedData.length - principal,
-            ],
-            borderColor: "black",
-            backgroundColor: ["rgb(60, 150, 255)", "rgb(255, 99, 132)"],
-            borderWidth: 2,
-          },
-        ],
-      },
-      options: {
-        // custom tooltips for the donut chart
+    // if (donutContainerRef.current === null) return;
+    // donutContainerRef.current.innerHTML = "";
+    // const donutCanvas = document.createElement("canvas");
+    // donutContainerRef.current.appendChild(donutCanvas);
+    // new Chart(donutCanvas, {
+    //   type: "doughnut",
+    //   // different labels for the different parts of the donut chart
+    //   data: {
+    //     labels: ["Principle", "Interest"],
+    //     datasets: [
+    //       {
+    //         label: "Loan Balance",
+    //         data: [
+    //           principal,
+    //           monthlyPayment * calculatedData.length - principal,
+    //         ],
+    //         borderColor: "black",
+    //         backgroundColor: ["rgb(60, 150, 255)", "rgb(255, 99, 132)"],
+    //         borderWidth: 2,
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     // custom tooltips for the donut chart
 
-        plugins: {
-          legend: {
-            position: "bottom",
-            labels: {
-              color: "white",
-            },
-          },
-          tooltip: {
-            callbacks: {
-              title: (context) => {
-                return `${context[0].label}`;
-              },
-              label: function (context: any) {
-                const label = context.label;
-                const value = parseNumberString(context.formattedValue);
-                const total = monthlyPayment * calculatedData.length;
-                // get the percentage of the total that the value is
-                const percentage = ((value / total) * 100).toFixed(2);
-                return ` ${percentage}%`;
-              },
-            },
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    });
-  }, [calculatedData, monthlyPayment, principal]);
+    //     plugins: {
+    //       legend: {
+    //         position: "bottom",
+    //         labels: {
+    //           color: "white",
+    //         },
+    //       },
+    //       tooltip: {
+    //         callbacks: {
+    //           title: (context) => {
+    //             return `${context[0].label}`;
+    //           },
+    //           label: function (context: any) {
+    //             const label = context.label;
+    //             const value = parseNumberString(context.formattedValue);
+    //             const total = monthlyPayment * calculatedData.length;
+    //             // get the percentage of the total that the value is
+    //             const percentage = ((value / total) * 100).toFixed(2);
+    //             return ` ${percentage}%`;
+    //           },
+    //         },
+    //       },
+    //     },
+    //     responsive: true,
+    //     maintainAspectRatio: false,
+    //   },
+    // });
+    // ********************************************************************************
+  }, [calculatedData]);
 
   useEffect(() => {
     if (calculatedData.length) {
@@ -368,9 +356,9 @@ const Page = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculatedData]);
 
-  const handleDateChange = (e: any) => {
-    setSelectedDate(e.target.value ? new Date(e.target.value) : new Date());
-  };
+  // const handleDateChange = (e: any) => {
+  //   setSelectedDate(e.target.value ? new Date(e.target.value) : new Date());
+  // };
 
   return (
     <div className="w-full flex flex-col items-center">
