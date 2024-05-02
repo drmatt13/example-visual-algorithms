@@ -153,7 +153,7 @@ const Page = () => {
         Array.from({ length: gridLength ** 2 }, (_, key) => (
           <div
             key={key}
-            className={`h-full w-full border border-sky-700/50 noselect transition-colors ease-in animate-fade-in`}
+            className={`h-full w-full border border-sky-700/50 noselect transition-colors ease-in animate-fade-in will-change-transform transform-gpu`}
             data-key={key}
             data-landtype={"water"}
             data-countIslands-enqueued={false}
@@ -432,7 +432,7 @@ const Page = () => {
     <div className="min-h-full flex flex-col items-center py-8">
       <div className="overflow-hidden max-w-[90vw] max-h-[90vw] w-96 h-96 rounded-lg">
         <div
-          className="h-full w-full grid bg-sky-400/90 will-change-transform"
+          className="h-full w-full grid bg-sky-400/90 will-change-transform transform-gpu"
           ref={gridContainerRef}
           style={{
             gridTemplateRows: `repeat(${gridLength}, 1fr)`,
