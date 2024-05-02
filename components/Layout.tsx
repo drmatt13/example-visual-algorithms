@@ -35,35 +35,31 @@ const Layout = ({ children }: Props) => {
                 : "-translate-x-full duration-300"
             } noselect bg-black border-r border-gray-800 transition-transform fixed top-0 left-0 h-screen flex flex-col items-start w-64 [&>a]:cursor-pointer [&>a:hover]:text-white [&>a]:mt-10 [&>a:first-of-type]:mt-20 pl-10 overflow-y-auto`}
           >
-            <Link href="infinite-scroll">
-              <a onClick={() => setIsMenuOpen(false)}>Infinite Scroll</a>
-            </Link>
-            <Link href="path-finder">
-              <a onClick={() => setIsMenuOpen(false)}>Path Finder</a>
-            </Link>
-            <Link href="visual-sort">
-              <a onClick={() => setIsMenuOpen(false)}>Visual Sort</a>
-            </Link>
-            <Link href="sodoku-solver">
-              <a onClick={() => setIsMenuOpen(false)}>Sodoku Solver</a>
-            </Link>
-            <Link href="drag-controls">
-              <a onClick={() => setIsMenuOpen(false)}>Drag Controls</a>
-            </Link>
-            <Link href="mine-sweeper">
-              <a onClick={() => setIsMenuOpen(false)}>Mine Sweeper</a>
-            </Link>
             <Link href="visualize-loan">
-              <a onClick={() => setIsMenuOpen(false)}>Visualize Loan</a>
-            </Link>
-            <Link href="linear-regression">
-              <a onClick={() => setIsMenuOpen(false)}>Linear Regression</a>
-            </Link>
-            <Link href="random-forrest">
-              <a onClick={() => setIsMenuOpen(false)}>Random Forrest</a>
+              <a onClick={() => setIsMenuOpen(false)}>Calculate Loan</a>
             </Link>
             <Link href="count-islands">
               <a onClick={() => setIsMenuOpen(false)}>Count Islands</a>
+            </Link>
+            <Link href="dijkstra">
+              <a onClick={() => setIsMenuOpen(false)}>X Dijkstra</a>
+            </Link>
+            <Link href="infinite-scroll">
+              <a onClick={() => setIsMenuOpen(false)}>Infinite Scroll</a>
+            </Link>
+
+            <Link href="visual-sort">
+              <a onClick={() => setIsMenuOpen(false)}>Insertion Sort</a>
+            </Link>
+            <Link href="path-finder">
+              <a onClick={() => setIsMenuOpen(false)}>X Path Finder</a>
+            </Link>
+            <Link href="sodoku-solver">
+              <a onClick={() => setIsMenuOpen(false)}>X Sodoku Solver</a>
+            </Link>
+
+            <Link href="Web Assembly">
+              <a onClick={() => setIsMenuOpen(false)}>X Web Assembly</a>
             </Link>
           </nav>
         </div>
