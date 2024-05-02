@@ -75,7 +75,7 @@ const Page = () => {
 
   return (
     <div className="h-full flex flex-col justify-center items-center mt-10 overflow-x-hidden">
-      <div className="w-[40rem] bg-gradient-to-l from-green-900/75 via-green-800/75 to-green-700/90 sm:rounded max-w-full h-72 flex items-end overflow-hidden">
+      <div className="w-[40rem] bg-gradient-to-l from-green-900/75 via-green-800/75 to-green-700/80 sm:rounded max-w-full h-72 flex items-end overflow-hidden">
         {!initialLoad &&
           array.map((value, index) => (
             <div
@@ -84,7 +84,7 @@ const Page = () => {
                 current === index
                   ? "bg-sky-700"
                   : "bg-green-600 transition-colors duration-300 ease-in"
-              } shadow shadow-black/50`}
+              } shadow shadow-black/25`}
               style={{ height: `${value}%` }}
             />
           ))}

@@ -432,7 +432,7 @@ const Page = () => {
     <div className="min-h-full flex flex-col items-center py-8">
       <div className="overflow-hidden max-w-[90vw] max-h-[90vw] w-96 h-96 rounded-lg">
         <div
-          className="h-full w-full grid bg-sky-400/90"
+          className="h-full w-full grid bg-sky-400/90 will-change-transform"
           ref={gridContainerRef}
           style={{
             gridTemplateRows: `repeat(${gridLength}, 1fr)`,
