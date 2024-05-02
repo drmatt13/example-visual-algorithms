@@ -153,7 +153,7 @@ const Page = () => {
         Array.from({ length: gridLength ** 2 }, (_, key) => (
           <div
             key={key}
-            className={`h-full w-full border border-sky-700/50 noselect transition-colors ease-in animate-fade-in will-change-transform transform-gpu`}
+            className={`h-full w-full border border-sky-700/50 noselect transition-colors ease-in animate-fade-in `}
             data-key={key}
             data-landtype={"water"}
             data-countIslands-enqueued={false}
