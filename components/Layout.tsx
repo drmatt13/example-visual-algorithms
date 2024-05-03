@@ -42,7 +42,12 @@ const Layout = ({ children }: Props) => {
               <a onClick={() => setIsMenuOpen(false)}>Count Islands</a>
             </Link>
             <Link href="dijkstra">
-              <a onClick={() => setIsMenuOpen(false)}>X Dijkstra</a>
+              <a
+                className="text-red-800 cursor-not-allowed"
+                onClick={(e) => e.preventDefault()}
+              >
+                Dijkstra
+              </a>
             </Link>
             <Link href="infinite-scroll">
               <a onClick={() => setIsMenuOpen(false)}>Infinite Scroll</a>
@@ -52,14 +57,24 @@ const Layout = ({ children }: Props) => {
               <a onClick={() => setIsMenuOpen(false)}>Insertion Sort</a>
             </Link>
             <Link href="path-finder">
-              <a onClick={() => setIsMenuOpen(false)}>X Path Finder</a>
+              <a
+                className="text-red-800 cursor-not-allowed"
+                onClick={(e) => e.preventDefault()}
+              >
+                Path Finder
+              </a>
             </Link>
             <Link href="sodoku-solver">
-              <a onClick={() => setIsMenuOpen(false)}>X Sodoku Solver</a>
+              <a onClick={() => setIsMenuOpen(false)}>Sodoku Solver</a>
             </Link>
 
             <Link href="Web Assembly">
-              <a onClick={() => setIsMenuOpen(false)}>X Web Assembly</a>
+              <a
+                className="text-red-800 cursor-not-allowed"
+                onClick={(e) => e.preventDefault()}
+              >
+                Web Assembly
+              </a>
             </Link>
           </nav>
         </div>

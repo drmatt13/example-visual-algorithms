@@ -98,7 +98,7 @@ function repaintCell(element: HTMLElement, processed: boolean) {
     element.classList.remove("bg-zinc-800");
     element.classList.add("bg-sky-800");
     element.classList.remove("duration-300");
-    element.classList.add("duration-150");
+    // element.classList.add("duration-150");
     element.classList.remove("ease-in");
     element.classList.add("ease-out");
   } else {
@@ -106,7 +106,7 @@ function repaintCell(element: HTMLElement, processed: boolean) {
     element.classList.add("bg-zinc-800");
     element.classList.remove("ease-out");
     element.classList.add("ease-in");
-    element.classList.remove("duration-150");
+    // element.classList.remove("duration-150");
     element.classList.add("duration-300");
   }
   element.style.display = "";
@@ -161,7 +161,7 @@ const Page = () => {
       }
 
       if (col === 9) {
-        await delay(5);
+        await delay(1);
         await backtrack(board, row + 1, 0);
         return;
       }
@@ -179,7 +179,7 @@ const Page = () => {
           let cell = updateCell(row, col, num);
           if (cell) {
             repaintCell(cell, true);
-            await delay(5); // Delay after each update
+            await delay(1); // Delay after each update
           }
           await backtrack(board, row, col + 1);
           if (solutionFound || isCancelingRef.current) return;
@@ -187,7 +187,7 @@ const Page = () => {
           cell = updateCell(row, col, 0);
           if (cell) {
             repaintCell(cell, false);
-            await delay(5); // Delay after each update
+            await delay(1); // Delay after each update
           }
         }
       }
@@ -206,12 +206,13 @@ const Page = () => {
 
   const reset = useCallback(() => {
     setIsSolved(false);
+    combinationsTriedRef.current = 0; // Reset the number of
     combinationsTriedContainerRef.current!.textContent = "";
     isCancelingRef.current = true; // Set the flag to stop the solving process
     const container = containerRef.current;
     if (!container) return;
     container.innerHTML = "";
-    const board = generateSudokuPuzzle(54);
+    const board = generateSudokuPuzzle(60);
     for (let i = 0; i < 81; i++) {
       const cell = document.createElement("div");
       cell.className = `${
