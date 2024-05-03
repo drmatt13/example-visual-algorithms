@@ -74,7 +74,7 @@ const Page = () => {
   }, [initialLoad, reset]);
 
   return (
-    <div className="h-full flex flex-col justify-center items-center mt-10 overflow-x-hidden">
+    <div className="h-full flex flex-col justify-center items-center md:mt-5 lg:mt-8 overflow-x-hidden text-xs sm:text-sm lg:text-base">
       <div className="w-[40rem] bg-gradient-to-l from-green-900/75 via-green-800/75 to-green-700/80 sm:rounded max-w-full h-72 flex items-end overflow-hidden">
         {!initialLoad &&
           array.map((value, index) => (
