@@ -429,7 +429,7 @@ const Page = () => {
   }, [decode, encode, gridLength, randomPoints, reset]);
 
   return (
-    <div className="min-h-full flex flex-col items-center py-8">
+    <div className="min-h-full flex flex-col items-center md:mt-5 lg:mt-8 pb-8 lg:pb-12">
       <div className="overflow-hidden max-w-[90vw] max-h-[90vw] w-96 h-96 rounded-lg">
         <div
           className="h-full w-full grid bg-sky-400/90 will-change-transform transform-gpu"

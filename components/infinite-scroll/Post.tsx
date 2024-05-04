@@ -31,16 +31,16 @@ const Post = ({ post }: IProps) => {
 
   return (
     <>
-      <div className="relative bg-slate-300/25 pt-3 rounded-lg mb-4 max-w-[90%] w-[32rem] md:w-[35rem] test-white overflow-hidden">
+      <div className="relative bg-slate-300/25 pt-3 rounded-lg mb-4 max-w-[95%] w-[32rem] md:w-[35rem] overflow-hidden">
         <div className="mx-3 flex items-start pb-3 mb-3 border-b border-white/25">
           {profileImg && (
             <img
-              className="self-center rounded-full shadow-xl"
+              className="self-center rounded-full shadow-xl h-11 sm:h-12"
               src={profileImg}
               alt="avatar"
             />
           )}
-          <div className="flex-1 flex self-center ml-3 font-mono text-sm font-bold ">
+          <div className="flex-1 flex self-center ml-3 font-mono text-xs sm:text-sm font-bold ">
             {post.title}
           </div>
         </div>
@@ -55,14 +55,14 @@ const Post = ({ post }: IProps) => {
             <div>xxx shares</div>
           </div>
         </div>
-        <div className="h-12 flex justify-evenly mx-3">
-          <div className="m-1 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
+        <div className="h-10 md:h-12 sm:h-12 flex justify-evenly mx-3">
+          <div className="sm:m-1 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
             Like
           </div>
-          <div className="m-1 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
+          <div className="sm:m-1 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
             Comment
           </div>
-          <div className="m-1 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
+          <div className="sm:m-1 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
             Share
           </div>
         </div>

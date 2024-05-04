@@ -54,7 +54,12 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="h-full flex flex-col items-center b/g-white/10 py-10">
+    <div
+      className="h-full flex flex-col items-center md:mt-5 lg:mt-8"
+      style={{
+        fontSize: "clamp(.75rem, 1.75vw, .9rem)",
+      }}
+    >
       {posts && posts.map((post) => <Post key={post.id} post={post} />)}
       {loading && <div>Fetching Posts ...</div>}
     </div>
