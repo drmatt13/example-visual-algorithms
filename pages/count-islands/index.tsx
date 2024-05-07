@@ -54,7 +54,7 @@ const Page = () => {
   }>({
     menuOption: 0,
     gridLength: 40,
-    gridRange: [20, 100],
+    gridRange: [20, 50],
     randomPointsLength: 35,
     randomPoints: [],
     decay: 0.37,
@@ -156,8 +156,8 @@ const Page = () => {
             className={`h-full w-full border border-sky-700/50 noselect transition-colors ease-in animate-fade-in `}
             data-key={key}
             data-landtype={"water"}
-            data-countIslands-enqueued={false}
-            data-countIslands-traverseLand-processed={false}
+            data-count-islands-enqueued={false}
+            data-count-islands-traverse-land-processed={false}
           />
         ))
       );
@@ -166,7 +166,8 @@ const Page = () => {
     }
     setRandomPointsLength(gridLength + Math.floor(gridLength / 2));
     animtionRef.current = requestAnimationFrame(startAnimation);
-  }, [gridLength, reset]);
+    // createGrid();
+  }, [gridLength]);
 
   const generatePoints = useCallback(() => {
     animationStateRef.current = true;
@@ -296,8 +297,8 @@ const Page = () => {
     const landQueue = new Queue<Element>();
 
     const enqueueElement = (element: Element) => {
-      if (element.getAttribute("data-countIslands-enqueued") === "false") {
-        element.setAttribute("data-countIslands-enqueued", "true");
+      if (element.getAttribute("data-count-islands-enqueued") === "false") {
+        element.setAttribute("data-count-islands-enqueued", "true");
         if (element.getAttribute("data-landtype") === "water") {
           waterQueue.enqueue(element);
         } else {
@@ -316,7 +317,7 @@ const Page = () => {
       }
       optionsContainerRef.current.querySelectorAll("button")[0].disabled = true;
       const firstIsland = gridContainerRef.current.children[randomPoints[0]];
-      firstIsland.setAttribute("data-countIslands-enqueued", "true");
+      firstIsland.setAttribute("data-count-islands-enqueued", "true");
       if (firstIsland.getAttribute("data-landtype") === "water") {
         waterQueue.enqueue(firstIsland);
         return (animtionRef.current = requestAnimationFrame(traverseWater));
@@ -375,7 +376,7 @@ const Page = () => {
       }
       const element = landQueue.dequeue()!;
       if (
-        element.getAttribute("data-countIslands-traverseLand-processed") ===
+        element.getAttribute("data-count-islands-traverse-land-processed") ===
         "true"
       ) {
         if (landQueue.head) {
@@ -386,7 +387,10 @@ const Page = () => {
         animationStateRef.current = false;
       }
 
-      element.setAttribute("data-countIslands-traverseLand-processed", "true");
+      element.setAttribute(
+        "data-count-islands-traverse-land-processed",
+        "true"
+      );
 
       element.classList.remove("bg-green-800", "animate-fade-in");
       element.classList.add(
