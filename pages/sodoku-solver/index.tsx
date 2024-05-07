@@ -121,7 +121,7 @@ const Page = () => {
   const combinationsTriedContainerRef = useRef<HTMLDivElement>(null);
   const unmakeFlagRef = useRef(false);
   const rangeInputRef = useRef<HTMLInputElement>(null);
-  const rangeValueRef = useRef(150);
+  const rangeValueRef = useRef(300);
 
   const updateCell = useCallback((row: number, col: number, value: number) => {
     const container = containerRef.current;
@@ -166,7 +166,7 @@ const Page = () => {
       }
 
       if (col === 9) {
-        await delay(200 - rangeValueRef.current);
+        await delay(400 - rangeValueRef.current);
         unmakeFlagRef.current = false;
         await backtrack(board, row + 1, 0);
         return;
@@ -184,7 +184,7 @@ const Page = () => {
           if (cell) {
             repaintCell(cell, true);
             unmakeFlagRef.current = false;
-            await delay(200 - rangeValueRef.current); // Delay after each update
+            await delay(400 - rangeValueRef.current); // Delay after each update
           }
           await backtrack(board, row, col + 1);
           if (solutionFound || isCancelingRef.current) return;
@@ -197,7 +197,7 @@ const Page = () => {
           cell = updateCell(row, col, 0);
           if (cell) {
             repaintCell(cell, false);
-            await delay(200 - rangeValueRef.current); // Delay after each update
+            await delay(400 - rangeValueRef.current); // Delay after each update
           }
         }
       }
@@ -293,8 +293,8 @@ const Page = () => {
         <input
           className="flex-1 accent-sky-600"
           min={1}
-          max={200}
-          defaultValue={150}
+          max={400}
+          defaultValue={300}
           type="range"
           ref={rangeInputRef}
         />
