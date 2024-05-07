@@ -95,18 +95,14 @@ function isValid(board: number[][], row: number, col: number, num: number) {
 function repaintCell(element: HTMLElement, processed: boolean) {
   element.style.display = "none";
   if (processed) {
-    element.classList.remove("bg-zinc-800");
     element.classList.add("bg-sky-800");
-    element.classList.remove("duration-300");
-    // element.classList.add("duration-150");
+    element.classList.remove("bg-zinc-800");
     element.classList.remove("ease-out");
-    // element.classList.add("ease-out");
+    element.classList.remove("duration-300");
   } else {
     element.classList.remove("bg-sky-800");
     element.classList.add("bg-zinc-800");
-    // element.classList.remove("ease-out");
     element.classList.add("ease-out");
-    // element.classList.remove("duration-150");
     element.classList.add("duration-300");
   }
   element.style.display = "";
@@ -165,17 +161,8 @@ const Page = () => {
         return;
       }
 
-      if (col === 9) {
-        await delay(400 - rangeValueRef.current);
-        unmakeFlagRef.current = false;
-        await backtrack(board, row + 1, 0);
-        return;
-      }
-
-      if (ogBoard[row][col] !== 0) {
-        await backtrack(board, row, col + 1);
-        return;
-      }
+      if (col === 9) return await backtrack(board, row + 1, 0);
+      if (ogBoard[row][col] !== 0) return await backtrack(board, row, col + 1);
 
       for (let num = 1; num <= 9; num++) {
         if (isValid(board, row, col, num)) {
@@ -209,7 +196,6 @@ const Page = () => {
         0,
         0
       );
-      console.log(ogBoard);
       setIsSolving(false);
     })();
   }, [isSolving, updateCell]);
