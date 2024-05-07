@@ -161,8 +161,14 @@ const Page = () => {
         return;
       }
 
-      if (col === 9) return await backtrack(board, row + 1, 0);
-      if (ogBoard[row][col] !== 0) return await backtrack(board, row, col + 1);
+      if (col === 9) {
+        await backtrack(board, row + 1, 0);
+        return;
+      }
+      if (ogBoard[row][col] !== 0) {
+        await backtrack(board, row, col + 1);
+        return;
+      }
 
       for (let num = 1; num <= 9; num++) {
         if (isValid(board, row, col, num)) {
