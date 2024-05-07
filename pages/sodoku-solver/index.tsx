@@ -99,13 +99,13 @@ function repaintCell(element: HTMLElement, processed: boolean) {
     element.classList.add("bg-sky-800");
     element.classList.remove("duration-300");
     // element.classList.add("duration-150");
-    element.classList.remove("ease-in");
-    element.classList.add("ease-out");
+    element.classList.remove("ease-out");
+    // element.classList.add("ease-out");
   } else {
     element.classList.remove("bg-sky-800");
     element.classList.add("bg-zinc-800");
-    element.classList.remove("ease-out");
-    element.classList.add("ease-in");
+    // element.classList.remove("ease-out");
+    element.classList.add("ease-out");
     // element.classList.remove("duration-150");
     element.classList.add("duration-300");
   }
@@ -119,6 +119,9 @@ const Page = () => {
   const isCancelingRef = useRef(false);
   const combinationsTriedRef = useRef(0);
   const combinationsTriedContainerRef = useRef<HTMLDivElement>(null);
+  const unmakeFlagRef = useRef(false);
+  const rangeInputRef = useRef<HTMLInputElement>(null);
+  const rangeValueRef = useRef(150);
 
   const updateCell = useCallback((row: number, col: number, value: number) => {
     const container = containerRef.current;
@@ -156,12 +159,15 @@ const Page = () => {
       if (row === 9) {
         ogBoard = board.map((row) => [...row]);
         solutionFound = true;
+        combinationsTriedRef.current++;
+        combinationsTriedContainerRef.current!.textContent = `Combinations tried: ${combinationsTriedRef.current}`;
         setIsSolved(true);
         return;
       }
 
       if (col === 9) {
-        await delay(1);
+        await delay(200 - rangeValueRef.current);
+        unmakeFlagRef.current = false;
         await backtrack(board, row + 1, 0);
         return;
       }
@@ -173,21 +179,25 @@ const Page = () => {
 
       for (let num = 1; num <= 9; num++) {
         if (isValid(board, row, col, num)) {
-          combinationsTriedRef.current++;
-          combinationsTriedContainerRef.current!.textContent = `Combinations tried: ${combinationsTriedRef.current}`;
           board[row][col] = num;
           let cell = updateCell(row, col, num);
           if (cell) {
             repaintCell(cell, true);
-            await delay(1); // Delay after each update
+            unmakeFlagRef.current = false;
+            await delay(200 - rangeValueRef.current); // Delay after each update
           }
           await backtrack(board, row, col + 1);
           if (solutionFound || isCancelingRef.current) return;
           board[row][col] = 0; // Unmake move//
+          if (!unmakeFlagRef.current) {
+            unmakeFlagRef.current = true;
+            combinationsTriedRef.current++;
+            combinationsTriedContainerRef.current!.textContent = `Combinations tried: ${combinationsTriedRef.current}`;
+          }
           cell = updateCell(row, col, 0);
           if (cell) {
             repaintCell(cell, false);
-            await delay(1); // Delay after each update
+            await delay(200 - rangeValueRef.current); // Delay after each update
           }
         }
       }
@@ -217,7 +227,7 @@ const Page = () => {
       const cell = document.createElement("div");
       cell.className = `${
         board[Math.floor(i / 9)][i % 9] !== 0 ? "bg-zinc-700" : "bg-zinc-800"
-      } relative -z-10 w-[101%] flex justify-center items-center font-semibold text-white/80 transition-colors`;
+      } relative -z-10 w-[101%] flex justify-center items-center font-semibold text-white/80 /transition-colors`;
       if (board[Math.floor(i / 9)][i % 9] !== 0)
         cell.textContent = String(board[Math.floor(i / 9)][i % 9]);
       else cell.textContent = " ";
@@ -229,6 +239,15 @@ const Page = () => {
   useEffect(() => {
     reset();
   }, [reset]);
+
+  useEffect(() => {
+    // when the range input changes, update the range value ref
+    const rangeInput = rangeInputRef.current;
+    if (!rangeInput) return;
+    rangeInput.oninput = () => {
+      rangeValueRef.current = Number(rangeInput.value);
+    };
+  }, []);
 
   return (
     <div className="h-full flex flex-col justify-center items-center md:mt-5 lg:mt-8 overflow-x-hidden">
@@ -269,6 +288,17 @@ const Page = () => {
           ref={containerRef}
         />
       </div>
+      <div className="flex mt-2.5 w-96 max-w-[96%] justify-between">
+        <label className="mr-8">Speed: </label>
+        <input
+          className="flex-1 accent-sky-600"
+          min={1}
+          max={200}
+          defaultValue={150}
+          type="range"
+          ref={rangeInputRef}
+        />
+      </div>
       <div className="w-96 max-w-[96%] flex justify-end mt-2.5 pb-10">
         <div
           ref={combinationsTriedContainerRef}
@@ -288,6 +318,7 @@ const Page = () => {
           Reset
         </button>
       </div>
+      {/* <div>sadds</div> */}
     </div>
   );
 };
