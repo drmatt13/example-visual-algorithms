@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
 const Page = () => {
+  const [length] = useState(100);
   const [array, setArray] = useState<number[]>([]);
   const [processing, setProcessing] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
   const animationFrameRef = useRef<number | null>(null);
   const [current, setCurrent] = useState(-1); // state to indicate the current active index
+  const lastItemWasAnimatedRef = useRef(false);
 
   const reset = useCallback(() => {
     if (animationFrameRef.current) {
@@ -13,13 +15,12 @@ const Page = () => {
       animationFrameRef.current = null;
     }
     setArray(
-      Array.from({ length: 100 }, (_, i) => i + 1).sort(
-        () => Math.random() - 0.5
-      )
+      Array.from({ length }, (_, i) => i + 1).sort(() => Math.random() - 0.5)
     );
     setProcessing(false);
     setCurrent(-1); // Reset current index
-  }, []);
+    lastItemWasAnimatedRef.current = false;
+  }, [length]);
 
   const sort = useCallback(() => {
     if (processing) return;
@@ -28,7 +29,6 @@ const Page = () => {
     const arr = [...array];
 
     const insertionSortStep = (i: number) => {
-      setCurrent(i); // Set the current index for visual feedback
       if (i < n) {
         let key = arr[i];
         let j = i - 1;
@@ -45,12 +45,21 @@ const Page = () => {
             arr[j + 1] = key;
             setArray([...arr]);
             if (i + 1 < n) {
-              animationFrameRef.current = requestAnimationFrame(() =>
-                insertionSortStep(i + 1)
-              );
+              animationFrameRef.current = requestAnimationFrame(() => {
+                insertionSortStep(i + 1);
+              });
             } else {
-              setProcessing(false); // Sorting complete
-              setCurrent(-1); // Reset current index after sorting
+              if (lastItemWasAnimatedRef.current) {
+                setCurrent(i - 1);
+                requestAnimationFrame(() => {
+                  setCurrent(-1);
+                  setProcessing(false);
+                });
+              } else {
+                lastItemWasAnimatedRef.current = true;
+                setCurrent(-1); // Reset current index after sorting
+                setProcessing(false); // Sorting complete
+              }
             }
           }
         };
@@ -81,11 +90,11 @@ const Page = () => {
             <div
               key={index}
               className={`flex-1 ${
-                current === index
+                processing && current + 1 === index
                   ? "bg-sky-700"
                   : "bg-green-600 transition-colors duration-300 ease-in"
               } shadow shadow-black/25`}
-              style={{ height: `${value}%` }}
+              style={{ height: `${value * (100 / length)}%` }}
             />
           ))}
       </div>

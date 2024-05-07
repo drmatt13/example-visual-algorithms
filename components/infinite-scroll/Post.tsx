@@ -56,13 +56,13 @@ const Post = ({ post }: IProps) => {
           </div>
         </div>
         <div className="h-10 md:h-12 sm:h-12 flex justify-evenly mx-3">
-          <div className="sm:m-1 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
+          <div className="m-1 sm:m-1.5 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
             Like
           </div>
-          <div className="sm:m-1 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
+          <div className="m-1 sm:m-1.5 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
             Comment
           </div>
-          <div className="sm:m-1 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
+          <div className="m-1 sm:m-1.5 flex-1 flex justify-center items-center rounded-md hover:cursor-pointer hover:bg-gray-400/20 transition-colors ease-out">
             Share
           </div>
         </div>
