@@ -33,51 +33,45 @@ const Layout = ({ children }: Props) => {
               isMenuOpen
                 ? "translate-x-0 duration-200"
                 : "-translate-x-full duration-300"
-            } noselect bg-black border-r border-gray-800 transition-transform fixed top-0 left-0 h-screen flex flex-col items-start w-64 [&>a]:cursor-pointer [&>a:hover]:text-white [&>a]:mt-10 [&>a:first-of-type]:mt-20 pl-10 overflow-y-auto`}
+            } pb-16 noselect backdrop-blur bg-black/70 border-r border-gray-800 transition-transform fixed top-0 left-0 h-screen flex flex-col items-start w-60 [&>a]:cursor-pointer [&>a:hover]:text-white [&>a]:mt-10 [&>a:first-of-type]:mt-16 pl-10 overflow-y-auto`}
           >
-            <Link href="path-finder">
+            <Link href="/">
               <a
-                className="text-red-800 cursor-not-allowed"
-                onClick={(e) => e.preventDefault()}
+                className="text-blue-500 hover:!text-blue-400"
+                onClick={() => setIsMenuOpen(false)}
               >
-                Breadth First Search
+                Home Page
               </a>
             </Link>
-            <Link href="visualize-loan">
+            <Link href="calculate-loan">
               <a onClick={() => setIsMenuOpen(false)}>Calculate Loan</a>
             </Link>
             <Link href="count-islands">
               <a onClick={() => setIsMenuOpen(false)}>Count Islands</a>
             </Link>
-            <Link href="dijkstra">
-              <a
-                className="text-red-800 cursor-not-allowed"
-                onClick={(e) => e.preventDefault()}
-              >
-                Graph Search
-                {/* Dijkstra */}
-              </a>
+            <Link href="infinite-feed">
+              <a onClick={() => setIsMenuOpen(false)}>Infinite Feed</a>
             </Link>
-            <Link href="infinite-scroll">
-              <a onClick={() => setIsMenuOpen(false)}>Infinite Scroll</a>
-            </Link>
-
-            <Link href="visual-sort">
+            <Link href="insertion-sort">
               <a onClick={() => setIsMenuOpen(false)}>Insertion Sort</a>
             </Link>
-
+            <Link href="path-finder">
+              <a onClick={() => setIsMenuOpen(false)}>Path Finder</a>
+            </Link>
+            {/* <Link href="tree-traversal">
+              <a onClick={() => setIsMenuOpen(false)}>Tree Traversal</a>
+            </Link> */}
             <Link href="sodoku-solver">
               <a onClick={() => setIsMenuOpen(false)}>Sodoku Solver</a>
             </Link>
-
-            <Link href="Web Assembly">
+            {/* <Link href="Web Assembly">
               <a
                 className="text-red-800 cursor-not-allowed"
                 onClick={(e) => e.preventDefault()}
               >
                 Web Assembly
               </a>
-            </Link>
+            </Link> */}
           </nav>
         </div>
 

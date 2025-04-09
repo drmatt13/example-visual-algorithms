@@ -436,7 +436,7 @@ const Page = () => {
     <div className="min-h-full flex flex-col items-center md:mt-5 lg:mt-8 pb-8 lg:pb-12">
       <div className="overflow-hidden max-w-[90vw] max-h-[90vw] w-96 h-96 rounded-lg">
         <div
-          className="h-full w-full grid bg-sky-400/90 will-change-transform transform-gpu"
+          className="h-full w-full grid bg-sky-400/90"
           ref={gridContainerRef}
           style={{
             gridTemplateRows: `repeat(${gridLength}, 1fr)`,
@@ -467,7 +467,7 @@ const Page = () => {
               className="mt-4 bg-gray-300 hover:bg-gray-200 disabled:bg-gray-500 cursor-pointer disabled:cursor-not-allowed py-3 rounded-sm text-black"
               onClick={generateGrid}
             >
-              Continue
+              Generate Board
             </button>
           </>
         )}

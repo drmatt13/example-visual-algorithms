@@ -156,7 +156,8 @@ const Page = () => {
         ogBoard = board.map((row) => [...row]);
         solutionFound = true;
         combinationsTriedRef.current++;
-        combinationsTriedContainerRef.current!.textContent = `Combinations tried: ${combinationsTriedRef.current}`;
+        if (combinationsTriedContainerRef.current)
+          combinationsTriedContainerRef.current.textContent = `Combinations tried: ${combinationsTriedRef.current}`;
         setIsSolved(true);
         return;
       }
@@ -177,7 +178,7 @@ const Page = () => {
           if (cell) {
             repaintCell(cell, true);
             unmakeFlagRef.current = false;
-            await delay(400 - rangeValueRef.current); // Delay after each update
+            await delay(398 - rangeValueRef.current); // Delay after each update
           }
           await backtrack(board, row, col + 1);
           if (solutionFound || isCancelingRef.current) return;
@@ -185,12 +186,13 @@ const Page = () => {
           if (!unmakeFlagRef.current) {
             unmakeFlagRef.current = true;
             combinationsTriedRef.current++;
-            combinationsTriedContainerRef.current!.textContent = `Combinations tried: ${combinationsTriedRef.current}`;
+            if (combinationsTriedContainerRef.current)
+              combinationsTriedContainerRef.current.textContent = `Combinations tried: ${combinationsTriedRef.current}`;
           }
           cell = updateCell(row, col, 0);
           if (cell) {
             repaintCell(cell, false);
-            await delay(400 - rangeValueRef.current); // Delay after each update
+            await delay(398 - rangeValueRef.current); // Delay after each update
           }
         }
       }
